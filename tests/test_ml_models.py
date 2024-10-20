@@ -8,9 +8,11 @@ from api.ml_models import MLModel
 def mock_track_crud():
     return MagicMock()
 
+
 @pytest.fixture
 def model(mock_track_crud):
     return MLModel(track_crud=mock_track_crud)
+
 
 @pytest.fixture
 def sample_data():
@@ -25,28 +27,34 @@ def sample_data():
     }
     return pd.DataFrame(data), data['name'], ['spotify_id_1', 'spotify_id_2', 'spotify_id_3', 'spotify_id_4']
 
+
 def test_train(model, mock_track_crud, sample_data):
     df, track_names, spotify_ids = sample_data
-    model.train(df, spotify_ids)
 
-    # Verifique se o modelo foi treinado
+    df = df.drop('name', axis=1)
+    
+    assert isinstance(df, pd.DataFrame)
+
+    track_data = [{"name": name, "spotify_id": spotify_id} for name, spotify_id in zip(track_names, spotify_ids)]
+
+    model.train(df, spotify_ids, track_data)
+
     assert model.model is not None
     assert model.scaler is not None
 
-    # Verifique se os resultados foram salvos
     assert mock_track_crud.insert_prediction_result.call_count > 0
     assert mock_track_crud.insert_performance_metrics.call_count == 1
 
+
 def test_predict(model):
-    # Configure o modelo para que ele possa prever
     model.scaler = MagicMock()
     model.model = MagicMock()
     model.encoder = MagicMock()
 
-    model.scaler.transform.return_value = [[0.0]]  # Simulação da saída do scaler
-    model.model.predict.return_value = [1]  # Simulação de previsão
-    model.model.predict_proba.return_value = [[0.2, 0.8]]  # Simulação de probabilidade
-    model.encoder.inverse_transform.return_value = ['pop']  # Simulação do gênero previsto
+    model.scaler.transform.return_value = [[0.0]] 
+    model.model.predict.return_value = [1]  
+    model.model.predict_proba.return_value = [[0.2, 0.8]]  
+    model.encoder.inverse_transform.return_value = ['pop']  
 
     track_data = {
         "danceability": 0.5,
@@ -62,6 +70,7 @@ def test_predict(model):
     assert result["confidence_score"] == 0.8
     assert result["model_used"] == model.model_name
     assert result["status"] == "success"
+
 
 def test_predict_no_scaler(model):
     track_data = {
