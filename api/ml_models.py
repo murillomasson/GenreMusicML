@@ -86,7 +86,7 @@ class MLModel:
 
     def save_results(self, ids_test, y_test, y_train, y_pred, y_pred_proba, accuracy, precision, recall, f1, track_names):
 
-        ids_test_list = ids_test.to_list()
+        ids_test_list = ids_test
         y_pred_proba_value = y_pred_proba[:, 1]
         confidence_scores = y_pred_proba_value.tolist()
         prediction_data_list = [{
