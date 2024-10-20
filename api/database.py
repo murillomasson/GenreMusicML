@@ -15,14 +15,14 @@ class Database:
         self.POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
         self.POSTGRES_DB = os.getenv("POSTGRES_DB")
         self.POSTGRES_HOST = os.getenv("POSTGRES_HOST")
-        self.POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+        self.POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
         
         self.SQLALCHEMY_DATABASE_URL = f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        print("URL:", self.SQLALCHEMY_DATABASE_URL)
         
         self.engine = create_engine(self.SQLALCHEMY_DATABASE_URL)
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
-        self.Base = declarative_base()
-    
+        
 
     def get_session(self):
         return self.SessionLocal()
