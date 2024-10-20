@@ -15,7 +15,7 @@ def session():
 def track_crud(session):
     return TrackCRUD(session)
 
-
+# Teste de asserção para verificar que um objeto track foi criado corretamente
 def test_create_track(track_crud):
     track_data = {
         "spotify_id": "12345",
