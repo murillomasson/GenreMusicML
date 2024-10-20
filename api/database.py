@@ -7,8 +7,6 @@ import os
 
 load_dotenv()
 
-Base = declarative_base()
-
 class Database:
     def __init__(self):
         self.POSTGRES_USER = os.getenv("POSTGRES_USER")
@@ -22,6 +20,7 @@ class Database:
         
         self.engine = create_engine(self.SQLALCHEMY_DATABASE_URL)
         self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        self.Base = declarative_base()
         
 
     def get_session(self):
