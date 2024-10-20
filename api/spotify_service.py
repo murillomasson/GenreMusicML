@@ -10,8 +10,8 @@ load_dotenv()
 
 class SpotifyService:
     def __init__(self):
-        self.client_id = os.getenv("SPOTIFY_CLIENT_ID")
-        self.client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
+        self.client_id = os.getenv("SPOTIPY_CLIENT_ID")
+        self.client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
         self.client_credentials_manager = SpotifyClientCredentials(client_id=self.client_id, client_secret=self.client_secret)
         self.sp = spotipy.Spotify(client_credentials_manager=self.client_credentials_manager)
 
