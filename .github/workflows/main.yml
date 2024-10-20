@@ -26,6 +26,11 @@ jobs:
             exit 1
           fi
 
+      - name: Clear Python cache
+        run: |
+          sudo rm -rf /usr/local/bin/python*
+          sudo apt-get remove python3*
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
