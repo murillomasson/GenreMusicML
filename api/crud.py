@@ -38,8 +38,7 @@ class TrackCRUD:
 
         if track:
             track.genre = updated_data.get("genre", track.genre)
-            track.danceability = 
-            updated_data.get("danceability", track.danceability)
+            track.danceability = updated_data.get("danceability", track.danceability)
             track.energy = updated_data.get("energy", track.energy)
             track.tempo = updated_data.get("tempo", track.tempo)
             track.loudness = updated_data.get("loudness", track.loudness)
