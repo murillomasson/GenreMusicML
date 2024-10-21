@@ -15,9 +15,7 @@ class Database:
         self.POSTGRES_DB = os.getenv("POSTGRES_DB")
         self.POSTGRES_HOST = os.getenv("POSTGRES_HOST")
         self.POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
-        self.SQLALCHEMY_DATABASE_URL = f"postgresql://{self.POSTGRES_USER}:" \
-        "{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:" \
-        "{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        self.SQLALCHEMY_DATABASE_URL = f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         print("URL:", self.SQLALCHEMY_DATABASE_URL)
 
         self.engine = create_engine(self.SQLALCHEMY_DATABASE_URL)
