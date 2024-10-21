@@ -15,8 +15,9 @@ def session():
 def track_crud(session):
     return TrackCRUD(session)
 
-# Teste de asserção para verificar que um objeto track foi criado corretamente
+
 def test_create_track(track_crud):
+# Teste de asserção para verificar que um objeto track foi criado corretamente
     track_data = {
         "spotify_id": "12345",
         "name": "Test Track",
@@ -27,9 +28,7 @@ def test_create_track(track_crud):
         "loudness": -5.0,
         "valence": 0.6
     }
-    
     track = track_crud.create_track(track_data)
-    
     assert track.spotify_id == track_data['spotify_id']
     assert track.name == track_data['name']
     assert track.genre == track_data['genre']
@@ -42,7 +41,6 @@ def test_create_track(track_crud):
 
 def test_get_track_by_id(track_crud, session):
     track = session.query(Track).first()
-    
     if track:
         fetched_track = track_crud.get_track_by_id(track.id)
         assert fetched_track.id == track.id
