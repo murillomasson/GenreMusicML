@@ -25,17 +25,17 @@ def sample_data():
         'genre': ['rock', 'pop', 'jazz', 'rock'],
         'name': ['Track1', 'Track2', 'Track3', 'Track4']
     }
-    return pd.DataFrame(data), data['name'], ['spotify_id_1', 'spotify_id_2', 'spotify_id_3', 'spotify_id_4']
+    return pd.DataFrame(data), 
+        data['name'], 
+        ['spotify_id_1', 'spotify_id_2', 'spotify_id_3', 'spotify_id_4']
 
 
 def test_train(model, mock_track_crud, sample_data):
     df, track_names, spotify_ids = sample_data
-
     df = df.drop('name', axis=1)
-    
     assert isinstance(df, pd.DataFrame)
-
-    track_data = [{"name": name, "spotify_id": spotify_id} for name, spotify_id in zip(track_names, spotify_ids)]
+    track_data = [{"name": name, "spotify_id": spotify_id} 
+                  for name, spotify_id in zip(track_names, spotify_ids)]
 
     model.train(df, spotify_ids, track_data)
 
@@ -50,11 +50,10 @@ def test_predict(model):
     model.scaler = MagicMock()
     model.model = MagicMock()
     model.encoder = MagicMock()
-
-    model.scaler.transform.return_value = [[0.0]] 
-    model.model.predict.return_value = [1]  
-    model.model.predict_proba.return_value = [[0.2, 0.8]]  
-    model.encoder.inverse_transform.return_value = ['pop']  
+    model.scaler.transform.return_value = [[0.0]]
+    model.model.predict.return_value = [1]
+    model.model.predict_proba.return_value = [[0.2, 0.8]]
+    model.encoder.inverse_transform.return_value = ['pop']
 
     track_data = {
         "danceability": 0.5,
