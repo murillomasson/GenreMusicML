@@ -25,8 +25,7 @@ class MLModel:
 
         y_encoded = self.encoder.fit_transform(y)
 
-        X_train, X_test, y_train, 
-        y_test, ids_train, ids_test = train_test_split(
+        X_train, X_test, y_train, y_test, ids_train, ids_test = train_test_split(
             X_scaled, y_encoded, spotify_ids, test_size=0.2, random_state=42
         )
 
