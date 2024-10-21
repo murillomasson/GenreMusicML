@@ -1,12 +1,13 @@
 from api.database import db
 from api.crud import TrackCRUD
-from api.ml_models import MLModel  
+from api.ml_models import MLModel
 from sqlalchemy.exc import OperationalError
 from api.spotify_service import SpotifyService
 import pandas as pd
 import uuid
 
 GENRES_LIMITS_API = 5
+
 
 def create_tables_if_not_exists():
     try:
@@ -20,7 +21,6 @@ class SpotifyPipeline:
     def __init__(self, session):
         self.track_crud = TrackCRUD(session)
         self.spotify_service = SpotifyService()
-
 
     def insert_tracks_from_spotify(self, genres):
         df = self.spotify_service.create_dataframe(genres)
@@ -54,7 +54,6 @@ class SpotifyPipeline:
             self.track_crud.insert_prediction_result(prediction_data)
 
         print(f"Inserted {len(data)} tracks into the database.")
-
 
     def train_model(self):
         tracks = self.track_crud.get_all_tracks()
@@ -90,19 +89,19 @@ class SpotifyPipeline:
                     "tempo": track.tempo,
                     "loudness": track.loudness,
                     "valence": track.valence
-                })               
-
+                })
             df = pd.DataFrame(data)
 
             print(f"Training model with {len(df)} tracks.")
 
             if 'genre' in df.columns and not df.empty:
-                accuracy, precision, recall, f1 = ml_model.train(df.drop(columns=["spotify_id"]), df['genre'], track_data)
+                accuracy, precision, recall, f1 = 
+                ml_model.train(df.drop(columns=["spotify_id"]),
+                               df['genre'], track_data)
                 return ml_model, accuracy, precision, recall, f1
-            
+
         print("No tracks available for training.")
         return None, None, None, None, None
-
 
     def predict_and_save_results(self, ml_model):
         tracks = self.track_crud.get_all_tracks()
@@ -117,7 +116,6 @@ class SpotifyPipeline:
             })
 
             predicted_genre = prediction_data["predicted_genre"]
-            actual_genre = track.genre
 
             prediction_result_data = {
                 "spotify_id": track.spotify_id,
@@ -130,11 +128,12 @@ class SpotifyPipeline:
                 "name": track.name
             }
 
-            new_prediction = self.track_crud.insert_prediction_result(prediction_result_data)
-            print(f"Prediction for track '{track.name}' inserted successfully: {new_prediction.predicted_genre}")
+            new_prediction = self.track_crud.insert_prediction_result(
+                prediction_result_data)
+            print(f"Prediction for track '{track.name}' " \
+                "inserted successfully: {new_prediction.predicted_genre}")
 
         self.insert_performance_metrics(ml_model)
-
 
     def insert_performance_metrics(self, ml_model):
         self.track_crud.insert_performance_metrics(
@@ -147,9 +146,9 @@ class SpotifyPipeline:
             f1_score=ml_model.f1_score
         )
 
+
 def main_insert_tracks(genres):
     create_tables_if_not_exists()
-    
     with db.get_session() as session:
         pipeline = SpotifyPipeline(session)
         pipeline.insert_tracks_from_spotify(genres)
@@ -157,12 +156,11 @@ def main_insert_tracks(genres):
 
 def main_train_and_predict(genres):
     create_tables_if_not_exists()
-    
+
     with db.get_session() as session:
         pipeline = SpotifyPipeline(session)
 
         ml_model, accuracy, precision, recall, f1 = pipeline.train_model()
-        
         if ml_model:
             pipeline.predict_and_save_results(ml_model)
 
@@ -170,5 +168,5 @@ def main_train_and_predict(genres):
 if __name__ == "__main__":
     genres = ['rock', 'pop', 'jazz', 'hip-hop', 'classical']
 
-    #main_insert_tracks(genres)
+    # main_insert_tracks(genres)
     main_train_and_predict(genres)
