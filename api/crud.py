@@ -6,9 +6,9 @@ class TrackCRUD:
     def __init__(self, db: Session):
         self.db = db
 
-
     def create_track(self, track_data):
-        existing_track = self.db.query(Track).filter(Track.spotify_id == track_data["spotify_id"]).first()
+        existing_track = self.db.query(Track).filter(
+            Track.spotify_id == track_data["spotify_id"]).first()
         if existing_track:
             return existing_track
 
@@ -27,33 +27,29 @@ class TrackCRUD:
         self.db.refresh(new_track)
         return new_track
 
-
     def get_track_by_id(self, track_id: int):
         return self.db.query(Track).filter(Track.id == track_id).first()
 
-
     def get_all_tracks(self):
         return self.db.query(Track).all()
-
 
     def update_track(self, track_id: int, updated_data):
         track = self.get_track_by_id(track_id)
 
         if track:
             track.genre = updated_data.get("genre", track.genre)
-            track.danceability = updated_data.get("danceability", track.danceability)
+            track.danceability = 
+            updated_data.get("danceability", track.danceability)
             track.energy = updated_data.get("energy", track.energy)
             track.tempo = updated_data.get("tempo", track.tempo)
             track.loudness = updated_data.get("loudness", track.loudness)
             track.valence = updated_data.get("valence", track.valence)
             track.name = updated_data.get("name", track.name)
 
-            
             self.db.commit()
             self.db.refresh(track)
 
         return track
-
 
     def delete_track(self, track_id: int):
         track = self.get_track_by_id(track_id)
@@ -65,7 +61,8 @@ class TrackCRUD:
         return track
 
     def insert_prediction_result(self, prediction_data):
-        existing_track = self.db.query(Track).filter(Track.spotify_id == prediction_data["spotify_id"]).first()
+        existing_track = self.db.query(Track).filter(
+            Track.spotify_id == prediction_data["spotify_id"]).first()
         print(prediction_data["spotify_id"])
         if not existing_track:
             new_track = Track(
@@ -83,7 +80,8 @@ class TrackCRUD:
             self.db.commit()
             self.db.refresh(new_track)
 
-        existing_prediction = self.db.query(PredictionResult).filter(PredictionResult.spotify_id == prediction_data["spotify_id"]).first()
+        existing_prediction = self.db.query(PredictionResult).filter(
+            PredictionResult.spotify_id == prediction_data["spotify_id"]).first()
 
         if not existing_prediction:
             print(prediction_data)
@@ -103,23 +101,26 @@ class TrackCRUD:
             self.db.refresh(new_prediction)
             return new_prediction
         else:
-            print(f"Prediction to spotify_id {prediction_data['spotify_id']} already exists")
+            print(f"Prediction to spotify_id " \
+            "{prediction_data['spotify_id']} already exists")
             return existing_prediction
 
-
-    def insert_performance_metrics(self, model_used, test_data_id, trained_data_count, tested_data_count, accuracy, precision=None, recall=None, f1_score=None):
-            performance_metrics = PerformanceMetrics(
-                model_used=model_used,
-                test_data_id=test_data_id,
-                trained_data_count=trained_data_count,
-                tested_data_count=tested_data_count,
-                accuracy=accuracy,
-                precision=precision,
-                recall=recall,
-                f1_score=f1_score
-            )
-            self.db.add(performance_metrics)
-            self.db.commit()
-            self.db.refresh(performance_metrics)
-            return performance_metrics
-            
+    def insert_performance_metrics(self, model_used,
+                                   test_data_id, trained_data_count,
+                                   tested_data_count, accuracy, 
+                                   precision=None, recall=None, 
+                                   f1_score=None):
+        performance_metrics = PerformanceMetrics(
+            model_used=model_used,
+            test_data_id=test_data_id,
+            trained_data_count=trained_data_count,
+            tested_data_count=tested_data_count,
+            accuracy=accuracy,
+            precision=precision,
+            recall=recall,
+            f1_score=f1_score
+        )
+        self.db.add(performance_metrics)
+        self.db.commit()
+        self.db.refresh(performance_metrics)
+        return performance_metrics
