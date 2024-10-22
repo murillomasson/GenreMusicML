@@ -46,9 +46,9 @@ class PredictionResult(Base):
     status = Column(String)
     notes = Column(String)
 
-    def __init__(self, spotify_id, 
-                 predicted_genre, confidence_score, 
-                 model_used, test_data_id, 
+    def __init__(self, spotify_id,
+                 predicted_genre, confidence_score,
+                 model_used, test_data_id,
                  status, notes, name):
         self.name = name
         self.spotify_id = spotify_id
@@ -74,9 +74,9 @@ class PerformanceMetrics(Base):
     f1_score = Column(Float)
     timestamp = datetime.now(timezone.utc)
 
-    def __init__(self, model_used, test_data_id, 
+    def __init__(self, model_used, test_data_id,
                  trained_data_count, tested_data_count,
-                 accuracy, precision=None, 
+                 accuracy, precision=None,
                  recall=None, f1_score=None):
         self.model_used = model_used
         self.test_data_id = test_data_id
