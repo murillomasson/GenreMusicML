@@ -95,7 +95,7 @@ class SpotifyPipeline:
             print(f"Training model with {len(df)} tracks.")
 
             if 'genre' in df.columns and not df.empty:
-                accuracy, precision, recall, f1 = ml_model.train(df.drop(columns=["spotify_id"]), df['genre'], track_data) # noqa: E501
+                accuracy, precision, recall, f1 = ml_model.train(df.drop(columns=["spotify_id"]), df['genre'], track_data)  # noqa: E501
                 return ml_model, accuracy, precision, recall, f1
 
         print("No tracks available for training.")
@@ -126,10 +126,8 @@ class SpotifyPipeline:
                 "name": track.name
             }
 
-            new_prediction = self.track_crud.insert_prediction_result(
-                prediction_result_data)
-            print(f"Prediction for track '{track.name}' " \
-                "inserted successfully: {new_prediction.predicted_genre}")
+            new_prediction = self.track_crud.insert_prediction_result(prediction_result_data)  # noqa: E501
+            print(f"Prediction for track '{track.name}' inserted successfully: {new_prediction.predicted_genre}")  # noqa: E501
 
         self.insert_performance_metrics(ml_model)
 
