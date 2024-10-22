@@ -17,7 +17,7 @@ def track_crud(session):
 
 
 def test_create_track(track_crud):
-# Teste de asserção para verificar que um objeto track foi criado corretamente
+    # Teste de asserção para verificar que um objeto track foi criado corretamente # noqa: E501
     track_data = {
         "spotify_id": "12345",
         "name": "Test Track",
