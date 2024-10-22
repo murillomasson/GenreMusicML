@@ -1,7 +1,7 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score # noqa: E501
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score  # noqa: E501
 import uuid
 
 
@@ -25,7 +25,7 @@ class MLModel:
 
         y_encoded = self.encoder.fit_transform(y)
 
-        X_train, X_test, y_train, y_test, ids_train, ids_test = train_test_split(X_scaled, y_encoded, spotify_ids, test_size=0.2, random_state=42) # noqa: E501
+        X_train, X_test, y_train, y_test, ids_train, ids_test = train_test_split(X_scaled, y_encoded, spotify_ids, test_size=0.2, random_state=42)  # noqa: E501
 
         self.model.fit(X_train, y_train)
 
@@ -55,7 +55,7 @@ class MLModel:
 
     def predict(self, track_data):
         if not self.scaler:
-            raise ValueError("Model has not been trained yet. Please train the model before prediction.") # noqa: E501
+            raise ValueError("Model has not been trained yet. Please train the model before prediction.")  # noqa: E501
 
         features = [[
             track_data["danceability"],
