@@ -95,9 +95,7 @@ class SpotifyPipeline:
             print(f"Training model with {len(df)} tracks.")
 
             if 'genre' in df.columns and not df.empty:
-                accuracy, precision, recall, f1 = 
-                ml_model.train(df.drop(columns=["spotify_id"]),
-                               df['genre'], track_data)
+                accuracy, precision, recall, f1 = ml_model.train(df.drop(columns=["spotify_id"]), df['genre'], track_data) # noqa: E501
                 return ml_model, accuracy, precision, recall, f1
 
         print("No tracks available for training.")
