@@ -8,7 +8,7 @@ def database():
 
 
 def test_database_connection(database):
-# Teste para verificar se a conexão com base de dados ocorre com sucesso ou não
+    # Teste para verificar se a conexão com base de dados ocorre com sucesso ou não # noqa: E501
     try:
         database.test_connection()
         connected = True
