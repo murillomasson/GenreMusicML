@@ -38,7 +38,7 @@ class TrackCRUD:
 
         if track:
             track.genre = updated_data.get("genre", track.genre)
-            track.danceability = updated_data.get("danceability", track.danceability)
+            track.danceability = updated_data.get("danceability", track.danceability) # noqa: E501
             track.energy = updated_data.get("energy", track.energy)
             track.tempo = updated_data.get("tempo", track.tempo)
             track.loudness = updated_data.get("loudness", track.loudness)
@@ -79,8 +79,7 @@ class TrackCRUD:
             self.db.commit()
             self.db.refresh(new_track)
 
-        existing_prediction = self.db.query(PredictionResult).filter(
-            PredictionResult.spotify_id == prediction_data["spotify_id"]).first()
+        existing_prediction = self.db.query(PredictionResult).filter(PredictionResult.spotify_id == prediction_data["spotify_id"]).first() # noqa: E501
 
         if not existing_prediction:
             print(prediction_data)
@@ -100,14 +99,13 @@ class TrackCRUD:
             self.db.refresh(new_prediction)
             return new_prediction
         else:
-            print(f"Prediction to spotify_id " \
-            "{prediction_data['spotify_id']} already exists")
+            print(f"Prediction to spotify_id {prediction_data['spotify_id']} already exists") # noqa: E501
             return existing_prediction
 
     def insert_performance_metrics(self, model_used,
                                    test_data_id, trained_data_count,
-                                   tested_data_count, accuracy, 
-                                   precision=None, recall=None, 
+                                   tested_data_count, accuracy,
+                                   precision=None, recall=None,
                                    f1_score=None):
         performance_metrics = PerformanceMetrics(
             model_used=model_used,
