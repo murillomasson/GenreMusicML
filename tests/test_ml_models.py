@@ -25,7 +25,7 @@ def sample_data():
         'genre': ['rock', 'pop', 'jazz', 'rock'],
         'name': ['Track1', 'Track2', 'Track3', 'Track4']
     }
-    return pd.DataFrame(data), data['name'], ['spotify_id_1', 'spotify_id_2', 'spotify_id_3', 'spotify_id_4'] # noqa: E501
+    return pd.DataFrame(data), data['name'], ['spotify_id_1', 'spotify_id_2', 'spotify_id_3', 'spotify_id_4']  # noqa: E501
 
 
 def test_train(model, mock_track_crud, sample_data):
